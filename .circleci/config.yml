@@ -9,7 +9,7 @@ jobs: # define a job to be executed
       - setup_remote_docker # setup the Docker daemon
       - run:
           name: Install Hadolint
-          command: docker pull hadolint/hadolint
+          command: docker pull ghcr.io/hadolint/hadolint
       - run:
           name: Run Hadolint
           command: docker run --rm -i ghcr.io/hadolint/hadolint < Dockerfile
@@ -28,8 +28,9 @@ jobs: # define a job to be executed
         - image: cimg/base:stable # use the cimg/base:stable Docker image
       steps: # define the job steps
         - checkout # checkout the code from the Git repository
+        - setup_remote_docker # setup the Docker daemon
         - run:
-            name: Build App
+            name: Build Image
             command: docker build -t thedaamanda/karsajobs:latest .
         - run:
             name: Change Tag
