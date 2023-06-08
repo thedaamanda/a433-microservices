@@ -1,0 +1,8 @@
+apiVersion: v1 # version of Kubernetes API
+kind: ConfigMap # define a ConfigMap object
+metadata: # define metadata for the ConfigMap object
+  name: mongodb-config # sets the name of the ConfigMap object as "mongodb-config"
+data: # defines the data for the ConfigMap object
+  mongo.conf: | # sets the configuration file for the MongoDB database
+    storage:
+      dbPath: /data/db

@@ -1,0 +1,26 @@
+apiVersion: v1 # version of Kubernetes API
+kind: PersistentVolume # define a PersistentVolume object
+metadata: # define metadata for the PersistentVolume object
+  name: mongodb-pv-volume # sets the name of the PersistentVolume object as "mongodb-pv-volume"
+  labels: # sets labels for the PersistentVolume object with the label "type" set as "local"
+    type: local
+spec: # defines the specification of the PersistentVolume object
+  storageClassName: manual # sets the storage class name as "manual"
+  capacity: # sets the capacity of the PersistentVolume object as 4 Gigabytes
+    storage: 10Gi
+  accessModes: # sets the access modes of the PersistentVolume object as "ReadWriteOnce"
+    - ReadWriteOnce
+  hostPath: # sets the host path of the PersistentVolume object as "/mnt/data"
+    path: "/mnt/data/mongodb"
+---
+apiVersion: v1 # version of Kubernetes API
+kind: PersistentVolumeClaim # define a PersistentVolumeClaim object
+metadata: # define metadata for the PersistentVolumeClaim object
+  name: mongodb-pv-claim # sets the name of the PersistentVolumeClaim object as "mongodb-pv-claim"
+spec: # defines the specification of the PersistentVolumeClaim object
+  storageClassName: manual # sets the storage class name as "manual"
+  accessModes: # sets the access modes of the PersistentVolumeClaim object as "ReadWriteOnce"
+    - ReadWriteOnce
+  resources: # sets the resources of the PersistentVolumeClaim object as 4 Gigabytes
+    requests:
+      storage: 10Gi

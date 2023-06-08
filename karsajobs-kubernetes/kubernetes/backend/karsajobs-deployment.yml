@@ -1,0 +1,38 @@
+apiVersion: apps/v1 # version of Kubernetes API
+kind: Deployment # define a Deployment object
+metadata: # define metadata for the Deployment object
+  name: karsajobs-backend # sets the name of the Deployment object as "karsajobs-backend"
+  labels: # sets labels for the Deployment object with the label "app" set as "karsajobs" and "tier" set as "backend"
+    app: karsajobs
+    tier: backend
+spec: # defines the specification of the Deployment object
+  replicas: 1 # sets the number of replicas to 1
+  selector: # sets the label selector to target pods with the label "tier" set as "backend"
+    matchLabels:
+      tier: backend
+  template: # defines the template for the Deployment object
+    metadata: # defines metadata for the template
+      labels: # sets labels for the template with the label "app" set as "karsajobs" and "tier" set as "backend"
+        app: karsajobs
+        tier: backend
+    spec: # defines the specification of the template
+      containers: # defines the containers for the template
+        - name: karsajobs-backend-server # sets the name of the container as "karsajobs-backend-server"
+          image: ghcr.io/thedaamanda/karsajobs:latest # sets the image of the container from the Github Packages repository
+          ports: # sets the ports for the container with the container port 8080
+            - containerPort: 8080
+          env: # sets the environment variables for the container
+            - name: APP_PORT # sets the environment variable "APP_PORT" to the value "8080"
+              value: '8080'
+            - name: MONGO_HOST # sets the environment variable "MONGO_HOST" to the value "mongodb"
+              value: mongodb
+            - name: MONGO_USER # sets the environment variable "MONGO_USER" taken from the secret "mongodb-secret" with the key "MONGO_ROOT_USERNAME"
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: MONGO_ROOT_USERNAME
+            - name: MONGO_PASS # sets the environment variable "MONGO_PASS" taken from the secret "mongodb-secret" with the key "MONGO_ROOT_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: MONGO_ROOT_PASSWORD

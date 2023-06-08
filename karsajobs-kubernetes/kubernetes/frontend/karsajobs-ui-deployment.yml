@@ -1,0 +1,23 @@
+apiVersion: apps/v1 # version of Kubernetes API
+kind: Deployment # define a Deployment object
+metadata: # define metadata for the Deployment object
+  name: karsajobs-ui # sets the name of the Deployment object as "karsajobs-ui"
+  labels: # sets labels for the Deployment object with the label "app" set as "karsajobs" and "tier" set as "frontend"
+    app: karsajobs
+    tier: frontend
+spec: # defines the specification of the Deployment object
+  replicas: 1 # sets the number of replicas to 1
+  selector: # sets the label selector to target pods with the label "tier" set as "frontend"
+    matchLabels:
+      tier: frontend
+  template: # defines the template for the Deployment object
+    metadata: # defines metadata for the template
+      labels: # sets labels for the template with the label "app" set as "karsajobs" and "tier" set as "frontend"
+        app: karsajobs
+        tier: frontend
+    spec: # defines the specification of the template
+      containers: # defines the containers for the template
+        - name: karsajobs-frontend-app # sets the name of the container as "karsajobs-frontend-app"
+          image: ghcr.io/thedaamanda/karsajobs-ui:latest # sets the image of the container from the Github Packages repository
+          ports: # sets the ports for the container with the container port 8000
+            - containerPort: 8000
