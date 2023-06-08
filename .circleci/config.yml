@@ -1,0 +1,53 @@
+version: 2.1 # use CircleCI 2.1
+
+jobs: # define a job to be executed
+  lint-dockerfile: # define the job name as "lint-dockerfile"
+    docker: # run the job in a Docker container
+      - image: cimg/base:stable # use the cimg/base:stable Docker image
+    steps: # define the job steps
+      - checkout # checkout the code from the Git repository
+      - setup_remote_docker # setup the Docker daemon
+      - run:
+          name: Install Hadolint
+          command: docker pull hadolint/hadolint
+      - run:
+          name: Run Hadolint
+          command: docker run --rm -i ghcr.io/hadolint/hadolint < Dockerfile
+
+  test-app: # define the job name as "test-app"
+    docker: # run the job in a Docker container
+      - image: cimg/go:1.15 # use the cimg/go:1.15 Docker image
+    steps: # define the job steps
+      - checkout # checkout the code from the Git repository
+      - run:
+          name: Run Tests
+          command: go test -v -short --count=1 $(go list ./...)
+
+  	build-app-karsajobs: # define the job name as "build-app-karsajobs"
+      docker: # run the job in a Docker container
+        - image: cimg/base:stable # use the cimg/base:stable Docker image
+      steps: # define the job steps
+        - checkout # checkout the code from the Git repository
+        - run:
+            name: Build App
+            command: docker build -t thedaamanda/karsajobs:latest .
+        - run:
+            name: Change Tag
+            command: docker tag thedaamanda/karsajobs:latest ghcr.io/thedaamanda/karsajobs:latest
+        - run:
+            name: Login to Github Packages
+            command: echo $CR_PAT | docker login ghcr.io -u thedaamanda --password-stdin
+        - run:
+            name: Push to Github Packages
+            command: docker push ghcr.io/thedaamanda/karsajobs:latest
+
+workflows: # define a workflow to orchestrate the jobs
+  karsajobs-workflow: # define the workflow name as "karsajobs-workflow"
+    jobs: # define the workflow jobs
+      - lint-dockerfile # execute the "lint-dockerfile" job
+      - test-app: # define the job name as "test-app" and wait for the "lint-dockerfile" job to finish
+          requires:
+            - lint-dockerfile
+      - build-app-karsajobs: # define the job name as "build-app-karsajobs" and wait for the "test-app" job to finish
+          requires:
+            - test-app
