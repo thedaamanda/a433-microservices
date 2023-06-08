@@ -23,24 +23,24 @@ jobs: # define a job to be executed
           name: Run Tests
           command: go test -v -short --count=1 $(go list ./...)
 
-  	build-app-karsajobs: # define the job name as "build-app-karsajobs"
-      docker: # run the job in a Docker container
-        - image: cimg/base:stable # use the cimg/base:stable Docker image
-      steps: # define the job steps
-        - checkout # checkout the code from the Git repository
-        - setup_remote_docker # setup the Docker daemon
-        - run:
-            name: Build Image
-            command: docker build -t thedaamanda/karsajobs:latest .
-        - run:
-            name: Change Tag
-            command: docker tag thedaamanda/karsajobs:latest ghcr.io/thedaamanda/karsajobs:latest
-        - run:
-            name: Login to Github Packages
-            command: echo $CR_PAT | docker login ghcr.io -u thedaamanda --password-stdin
-        - run:
-            name: Push to Github Packages
-            command: docker push ghcr.io/thedaamanda/karsajobs:latest
+	build-app-karsajobs: # define the job name as "build-app-karsajobs"
+    docker: # run the job in a Docker container
+      - image: cimg/base:stable # use the cimg/base:stable Docker image
+    steps: # define the job steps
+      - checkout # checkout the code from the Git repository
+      - setup_remote_docker # setup the Docker daemon
+      - run:
+          name: Build Image
+          command: docker build -t thedaamanda/karsajobs:latest .
+      - run:
+          name: Change Tag
+          command: docker tag thedaamanda/karsajobs:latest ghcr.io/thedaamanda/karsajobs:latest
+      - run:
+          name: Login to Github Packages
+          command: echo $CR_PAT | docker login ghcr.io -u thedaamanda --password-stdin
+      - run:
+          name: Push to Github Packages
+          command: docker push ghcr.io/thedaamanda/karsajobs:latest
 
 workflows: # define a workflow to orchestrate the jobs
   karsajobs-workflow: # define the workflow name as "karsajobs-workflow"
