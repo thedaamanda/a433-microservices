@@ -37,7 +37,7 @@ jobs: # define a job to be executed
           command: docker tag thedaamanda/karsajobs:latest ghcr.io/thedaamanda/karsajobs:latest
       - run:
           name: Login to Github Packages
-          command: echo $CR_PAT | docker login ghcr.io -u thedaamanda --password-stdin
+          command: echo $GITHUB_TOKEN | docker login ghcr.io -u thedaamanda --password-stdin
       - run:
           name: Push to Github Packages
           command: docker push ghcr.io/thedaamanda/karsajobs:latest
