@@ -23,7 +23,7 @@ jobs: # define a job to be executed
           name: Run Tests
           command: go test -v -short --count=1 $(go list ./...)
 
-	build-app-karsajobs: # define the job name as "build-app-karsajobs"
+  build-app-karsajobs: # define the job name as "build-app-karsajobs"
     docker: # run the job in a Docker container
       - image: cimg/base:stable # use the cimg/base:stable Docker image
     steps: # define the job steps
