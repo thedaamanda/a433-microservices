@@ -1,0 +1,16 @@
+apiVersion: v1 # Version of Kubernetes API
+kind: Service # Define the Service object
+metadata: # Define metadata for the Service
+  name: order-service # Set the name of the Service as "order-service"
+  labels: # Define labels for the Service
+    app: order # Set the label "app" as "order"
+spec: # Define the specification for the Service
+  ports: # Define the ports exposed by the Service
+  - name: order-service # Set the name of the port as "order-service"
+    port: 3000 # Set the port number to 3000
+    targetPort: 3000 # Set the target port number to 3000
+    protocol: TCP # Set the protocol to TCP
+    nodePort: 30000 # Set the node port number to 30000
+  selector: # Define the workload labels to which the Service is attached
+    app: order # Set the label "app" as "order"
+  type: NodePort # Set the type of the Service as "NodePort"

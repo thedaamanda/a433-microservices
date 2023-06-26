@@ -1,0 +1,48 @@
+apiVersion: apps/v1 # Version of Kubernetes API
+kind: StatefulSet # Define the StatefulSet object
+metadata: # Define metadata for the StatefulSet
+  name: rabbitmq # Set the name of the StatefulSet as "rabbitmq"
+  labels: # Define labels for the StatefulSet
+    app: rabbitmq # Set the label "app" as "rabbitmq"
+spec: # Define the specification for the StatefulSet
+  serviceName: rabbitmq # Set the name of the Service as "rabbitmq"
+  replicas: 1 # Set the number of replicas to 1
+  selector: # Define the selector for the StatefulSet
+    matchLabels: # Define the labels for the selector
+      app: rabbitmq # Set the label "app" as "rabbitmq"
+  template: # Define the template for the StatefulSet
+    metadata: # Define metadata for the template
+      labels: # Define labels for the template
+        app: rabbitmq # Set the label "app" as "rabbitmq"
+    spec: # Define the specification for the template
+      containers: # Define the containers for the template
+      - name: rabbitmq # Set the name of the container as "rabbitmq"
+        image: rabbitmq:3.11-management # Set the image of the container
+        imagePullPolicy: IfNotPresent # Set the image pull policy to "IfNotPresent"
+        ports: # Define the ports exposed by the container
+        - name: amqp # Set the name of the port as "amqp"
+          containerPort: 5672 # Set the port number to 5672
+        - name: mgmt # Set the name of the port as "mgmt"
+          containerPort: 15672 # Set the port number to 15672
+        volumeMounts: # Define the volume mounts for the container
+        - name: rabbitmq-data # Set the name of the volume mounts as "rabbitmq-data"
+          mountPath: /var/lib/rabbitmq/ # Set the mount path as "/var/lib/rabbitmq/"
+        - name: rabbitmq-logs # Set the name of the volume mounts as "rabbitmq-log"
+          mountPath: /var/log/rabbitmq # Set the mount path as "/var/log/rabbitmq"
+  volumeClaimTemplates: # Define the volume claim templates for the StatefulSet
+  - metadata: # Define metadata for the volume claim templates
+      name: rabbitmq-data # Set the name of the volume claim templates as "rabbitmq-data"
+    spec: # Define the specification for the volume claim templates
+      accessModes: # Define the access modes for the volume claim templates
+      - ReadWriteOnce # Set the access mode as "ReadWriteOnce"
+      resources: # Define the resources for the volume claim templates
+        requests: # Define the requests for the volume claim templates
+          storage: 1Gi # Set the storage size as 1Gi
+  - metadata: # Define metadata for the volume claim templates
+      name: rabbitmq-logs # Set the name of the volume claim templates as "rabbitmq-log"
+    spec: # Define the specification for the volume claim templates
+      accessModes: # Define the access modes for the volume claim templates
+      - ReadWriteOnce # Set the access mode as "ReadWriteOnce"
+      resources: # Define the resources for the volume claim templates
+        requests: # Define the requests for the volume claim templates
+          storage: 1Gi # Set the storage size as 1Gi

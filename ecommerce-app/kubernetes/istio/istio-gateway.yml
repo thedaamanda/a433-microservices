@@ -1,0 +1,33 @@
+apiVersion: networking.istio.io/v1alpha3 # Version of Istio networking
+kind: Gateway # Define the Gateway object
+metadata: # Define metadata for the Gateway
+  name: e-commerce-gateway # Set the name of the Gateway as "e-commerce-gateway"
+spec: # Define the specification for the Gateway
+  selector: # Define the workload labels to which the Gateway is attached
+    istio: ingressgateway # Set the label "istio: ingressgateway"
+  servers: # Define the servers for the Gateway
+  - port: # Define the port for the server
+      number: 15443 # Set the port number to 15443
+      name: http # Set the protocol name to HTTP
+      protocol: HTTP # Set the protocol to HTTP
+    hosts: # Define the hosts exposed by the Gateway
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3 # Version of Istio networking
+kind: VirtualService # Define the VirtualService object
+metadata: # Define metadata for the VirtualService
+  name: e-commerce # Set the name of the VirtualService as "e-commerce"
+spec: # Define the specification for the VirtualService
+  hosts: # Define the hosts exposed by the VirtualService
+  - "*" # Set the host to "*"
+  gateways: # Define the gateways to which the VirtualService is attached
+  - e-commerce-gateway # Set the name of the Gateway as "e-commerce-gateway"
+  http: # Define the HTTP routes for the VirtualService
+  - match: # Define the match conditions for the HTTP route
+    - uri: # Define the URI for the match condition
+        exact: /order # Set the URI to "/order"
+    route: # Define the destination for the HTTP route
+    - destination: # Define the destination for the HTTP route
+        host: order-service # Set the host of the destination to "order-service"
+        port: # Define the port of the destination
+          number: 3000 # Set the port number to 3000

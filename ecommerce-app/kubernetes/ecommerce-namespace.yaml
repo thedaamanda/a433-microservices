@@ -1,0 +1,7 @@
+# create a new namespace with name 'ecommerce' and label 'app: ecommerce'
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ecommerce
+  labels:
+    app: ecommerce

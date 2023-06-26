@@ -1,0 +1,25 @@
+apiVersion: apps/v1 # Version of Kubernetes API
+kind: Deployment # Define the Deployment object
+metadata: # Define metadata for the Deployment
+  name: order-service # Set the name of the Deployment as "order-service"
+  labels: # Define labels for the Deployment
+    app: order # Set the label "app" as "order"
+spec: # Define the specification for the Deployment
+  replicas: 1 # Set the number of replicas to 1
+  selector: # Define the selector for the Deployment
+    matchLabels: # Define the labels for the selector
+      app: order # Set the label "app" as "order"
+  template: # Define the template for the Deployment
+    metadata: # Define metadata for the template
+      labels: # Define labels for the template
+        app: order # Set the label "app" as "order"
+    spec: # Define the specification for the template
+      containers: # Define the containers for the template
+      - name: order-service # Set the name of the container as "order-service"
+        image: ghcr.io/thedaamanda/order-service:latest # Set the image of the container
+        imagePullPolicy: IfNotPresent # Set the image pull policy to "IfNotPresent"
+        ports: # Define the ports exposed by the container
+        - containerPort: 3000 # Set the port number to 3000
+        env: # Define the environment variables for the container
+          - name: AMQP_URL # Set the name of the environment variable as "AMQP_URL"
+            value: amqp://10.98.115.21:5672 # Set the value of the environment variable

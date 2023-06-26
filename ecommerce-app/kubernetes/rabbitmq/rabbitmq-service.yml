@@ -1,0 +1,19 @@
+apiVersion: v1 # Version of Kubernetes API
+kind: Service # Define the Service object
+metadata: # Define metadata for the Service
+  name: rabbitmq # Set the name of the Service as "rabbitmq"
+  labels: # Define labels for the Service
+    app: rabbitmq # Set the label "app" as "rabbitmq"
+spec: # Define the specification for the Service
+  ports: # Define the ports exposed by the Service
+  - name: rabbitmq-amqp # Set the name of the port as "rabbitmq-amqp"
+    port: 5672 # Set the port number to 5672
+    targetPort: 5672 # Set the target port number to 5672
+    nodePort: 30673 # Set the node port number to 30673
+  - name: rabbitmq-mgmt # Set the name of the port as "rabbitmq-mgmt"
+    port: 15672 # Set the port number to 15672
+    targetPort: 15672 # Set the target port number to 15672
+    nodePort: 30674 # Set the node port number to 30674
+  selector: # Define the selector for the Service
+    app: rabbitmq # Set the label "app" as "rabbitmq"
+  type: NodePort # Set the type of the Service as "NodePort"

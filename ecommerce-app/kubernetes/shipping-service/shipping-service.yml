@@ -1,0 +1,16 @@
+apiVersion: v1 # Version of Kubernetes API
+kind: Service # Define the Service object
+metadata: # Define metadata for the Service
+  name: shipping-service # Set the name of the Service as "shipping-service"
+  labels: # Define labels for the Service
+    app: shipping # Set the label "app" as "shipping"
+spec: # Define the specification for the Service
+  ports: # Define the ports exposed by the Service
+  - name: shipping-service # Set the name of the port as "shipping-service"
+    port: 3001 # Set the port number to 3001
+    targetPort: 3001 # Set the target port number to 3001
+    protocol: TCP # Set the protocol to TCP
+    nodePort: 30001 # Set the node port number to 30001
+  selector: # Define the workload labels to which the Service is attached
+    app: shipping # Set the label "app" as "shipping"
+  type: NodePort # Set the type of the Service as "NodePort"
